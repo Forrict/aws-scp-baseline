@@ -1,0 +1,40 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyGuardDutyChanges",
+      "Effect": "Deny",
+      "Action": [
+        "guardduty:DeleteDetector",
+        "guardduty:UpdateDetector",
+        "guardduty:DisassociateFromMasterAccount",
+        "guardduty:DisassociateFromAdministratorAccount",
+        "guardduty:DeleteMembers",
+        "guardduty:DisassociateMembers",
+        "guardduty:StopMonitoringMembers",
+        "guardduty:CreateFilter",
+        "guardduty:UpdateFilter",
+        "guardduty:DeleteFilter",
+        "guardduty:CreateIPSet",
+        "guardduty:UpdateIPSet",
+        "guardduty:DeleteIPSet",
+        "guardduty:CreateThreatIntelSet",
+        "guardduty:UpdateThreatIntelSet",
+        "guardduty:DeleteThreatIntelSet",
+        "guardduty:UpdatePublishingDestination",
+        "guardduty:DeletePublishingDestination",
+        "guardduty:ArchiveFindings",
+        "guardduty:UpdateFindingsFeedback"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/AWSControlTowerExecution",
+            "arn:aws:iam::*:role/GuardrailAdmin"
+          ]
+        }
+      }
+    }
+  ]
+}

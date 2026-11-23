@@ -1,0 +1,38 @@
+name: Validate SCPs
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1" # weekly: catches actions AWS renames or removes
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check grammar, size, actions and condition keys
+        run: python3 scripts/validate.py
+      - name: Check that the validator catches broken policies
+        run: python3 -m unittest discover -s tests -v
+
+  access-analyzer:
+    # Optional: runs only when the repository variable AWS_VALIDATION_ROLE_ARN is set
+    # to a role that GitHub can assume via OIDC and that allows access-analyzer:ValidatePolicy.
+    if: ${{ vars.AWS_VALIDATION_ROLE_ARN != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_VALIDATION_ROLE_ARN }}
+          aws-region: eu-west-1
+      - name: Validate with IAM Access Analyzer
+        run: scripts/validate-with-access-analyzer.sh
