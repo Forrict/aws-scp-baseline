@@ -2,7 +2,7 @@
 
 Ten service control policies (SCPs) that we at [Forrict](https://www.forrict.com/en/) use as a starting point for an AWS Organization. Every policy is checked automatically on each push: JSON grammar, the SCP size limit, and every action and condition key against the official AWS Service Authorization Reference.
 
-> Nederlandstalige uitleg: [README.nl.md](README.nl.md) en de blog [10 SCP's die elke AWS-organisatie nodig heeft](https://www.forrict.nl/nl/blog/).
+> Nederlandstalige uitleg: [README.nl.md](README.nl.md) en de blog [10 SCP's die elke AWS-organisatie nodig heeft](https://www.forrict.nl/nl/blog/2026-12-08-aws-service-control-policies/).
 
 **Test before you attach.** An SCP can block work in every account below the OU you attach it to. Attach these to a test OU first, check CloudTrail for `AccessDenied` errors, then roll out OU by OU. SCPs never apply to the management account.
 
@@ -32,7 +32,7 @@ The exception uses the `aws:PrincipalArn` condition key with `ArnNotLike`, so `a
 
 **Regions.** Policy 3 allows `eu-central-1` (Frankfurt) and `eu-west-1` (Ireland). Change the list in `aws:RequestedRegion` to the Regions you use. Do this before attaching: you lose access to resources in Regions you leave out. The exempt list of global services is taken from the AWS Control Tower Region deny control ([source](https://docs.aws.amazon.com/controltower/latest/controlreference/primary-region-deny-policy.html)). If you use Control Tower, use its built-in Region deny control instead of this policy.
 
-**Control Tower.** Control Tower already protects the resources it sets up itself with [mandatory controls](https://docs.aws.amazon.com/controltower/latest/userguide/mandatory-controls.html). Policies 4 to 8 also cover the trails, recorders and security services that teams set up themselves. Keep `AWSControlTowerExecution` in the exception list or Control Tower updates will fail.
+**Control Tower.** Control Tower protects the resources it sets up itself with [mandatory controls](https://docs.aws.amazon.com/controltower/latest/controlreference/mandatory-controls.html). Note that starting with Landing Zone version 4.0, mandatory controls are no longer applied by default ([source](https://docs.aws.amazon.com/controltower/latest/controlreference/control-behavior.html)), so check which ones are enabled in your landing zone. Policies 4 to 8 also cover the trails, recorders and security services that teams set up themselves. Keep `AWSControlTowerExecution` in the exception list or Control Tower updates will fail.
 
 **Quotas.** You can attach at most 10 SCPs directly to the root, an OU or an account, and one SCP can be at most 10,240 characters ([source](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html)). Together with `FullAWSAccess` these ten policies need 11 slots, so combine some of them (for example 5 to 8) into one file before attaching them all to one target, or spread them over the root and your OUs.
 
@@ -64,4 +64,4 @@ GitHub Actions runs these checks on every push and pull request, and weekly so w
 
 Several policies are adapted from AWS's own [service-control-policy-examples](https://github.com/aws-samples/service-control-policy-examples) (MIT-0). This repository is also MIT-0: use it however you like, no attribution required. It comes without warranty; you are responsible for testing it in your own organization.
 
-Questions, or help rolling this out? [Forrict landing zones](https://www.forrict.com/en/services/landingzones/).
+Background on every policy: [10 SCPs every AWS organization needs](https://www.forrict.com/en/blog/2026-12-08-aws-service-control-policies/). Questions, or help rolling this out? [Forrict landing zones](https://www.forrict.com/en/services/landingzones/).

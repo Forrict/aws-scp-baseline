@@ -2,7 +2,7 @@
 
 Tien service control policies (SCP's) die wij bij [Forrict](https://www.forrict.nl/nl/) gebruiken als startpunt voor een AWS Organization. Bij elke push worden alle policies automatisch gecontroleerd: JSON-structuur, de maximale grootte van een SCP, en elke actie en condition key tegen de officiële AWS Service Authorization Reference.
 
-De volledige uitleg per policy staat in de Engelstalige [README](README.md) en in de blog [10 SCP's die elke AWS-organisatie nodig heeft](https://www.forrict.nl/nl/blog/).
+De volledige uitleg per policy staat in de Engelstalige [README](README.md) en in de blog [10 SCP's die elke AWS-organisatie nodig heeft](https://www.forrict.nl/nl/blog/2026-12-08-aws-service-control-policies/).
 
 **Eerst testen.** Een SCP kan werk blokkeren in elk account onder de OU waar je hem aan hangt. Hang ze eerst aan een test-OU, kijk in CloudTrail naar `AccessDenied`-fouten en rol daarna OU voor OU uit. SCP's gelden nooit voor het management account.
 
