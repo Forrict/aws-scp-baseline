@@ -1,0 +1,1 @@
+{"Version":"2012-10-17","Statement":[{"Sid":"Same","Effect":"Deny","Action":"s3:*","Resource":"*"},{"Sid":"Same","Effect":"Deny","Action":"ec2:*","Resource":"*"}]}

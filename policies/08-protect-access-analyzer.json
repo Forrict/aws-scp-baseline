@@ -1,0 +1,26 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyAccessAnalyzerChanges",
+      "Effect": "Deny",
+      "Action": [
+        "access-analyzer:DeleteAnalyzer",
+        "access-analyzer:CreateArchiveRule",
+        "access-analyzer:UpdateArchiveRule",
+        "access-analyzer:DeleteArchiveRule",
+        "access-analyzer:ApplyArchiveRule",
+        "access-analyzer:UpdateFindings"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/AWSControlTowerExecution",
+            "arn:aws:iam::*:role/GuardrailAdmin"
+          ]
+        }
+      }
+    }
+  ]
+}

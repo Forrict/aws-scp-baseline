@@ -1,0 +1,34 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyConfigChanges",
+      "Effect": "Deny",
+      "Action": [
+        "config:StopConfigurationRecorder",
+        "config:DeleteConfigurationRecorder",
+        "config:PutConfigurationRecorder",
+        "config:DeleteDeliveryChannel",
+        "config:PutDeliveryChannel",
+        "config:DeleteRetentionConfiguration",
+        "config:PutRetentionConfiguration",
+        "config:DeleteConfigRule",
+        "config:DeleteOrganizationConfigRule",
+        "config:DeleteConformancePack",
+        "config:DeleteOrganizationConformancePack",
+        "config:DeleteEvaluationResults",
+        "config:DeleteAggregationAuthorization",
+        "config:DeleteConfigurationAggregator"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/AWSControlTowerExecution",
+            "arn:aws:iam::*:role/GuardrailAdmin"
+          ]
+        }
+      }
+    }
+  ]
+}
